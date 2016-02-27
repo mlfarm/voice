@@ -60,12 +60,11 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
-<<<<<<< HEAD
 
-#Original
+#original
+/raw/*
 /wave/*
 /fft/*
 /fft-prep/*
 /fft-log-prep/*
-/fft-model/*
 /mfcc/*
