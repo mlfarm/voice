@@ -18,7 +18,7 @@ import warnings
 
 # ========== モデルのロード ==========
 model = net.load_latest()
-cuda.get_device(args.gpu).use()
+cuda.get_device(0).use()
 model.to_gpu()
 xp = cuda.cupy
 
