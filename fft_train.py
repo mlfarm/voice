@@ -13,7 +13,7 @@ import fft_net as net
 
 #   Warningを表示する
 import warnings
-warnings.simplefilter("error")
+#warnings.simplefilter("error")
 
 # ========== モデルのロード ==========
 model = net.load_latest()
