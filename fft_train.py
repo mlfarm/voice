@@ -7,6 +7,7 @@ import numpy as np
 import chainer
 from chainer import optimizers
 from chainer import serializers
+from chainer import cuda
 
 import data
 import fft_net as net
@@ -17,6 +18,9 @@ import warnings
 
 # ========== モデルのロード ==========
 model = net.load_latest()
+cuda.get_device(args.gpu).use()
+model.to_gpu()
+xp = cuda.cupy
 
 # ========== 最適化 ==========
 optimizer = optimizers.Adam()
@@ -30,8 +34,8 @@ def evaluate(dataset):
     sum_loss = 0
 
     for i in range(dataset.shape[0] - 1):
-        x = chainer.Variable(dataset[i:i+1], volatile='on')
-        t = chainer.Variable(dataset[i+1:i+2], volatile='on')
+        x = chainer.Variable(xp.asarray(dataset[i:i+1]), volatile='on')
+        t = chainer.Variable(xp.asarray(dataset[i+1:i+2]), volatile='on')
 
         loss = evaluator(x, t)
 
@@ -71,9 +75,9 @@ for refresh in range(n_refresh):
     print("Iterate: {}".format(jump * n_epoch))
     for i in range(jump * n_epoch):
         # データを分割する
-        x = chainer.Variable(np.asarray(
+        x = chainer.Variable(xp.asarray(
             [train_data[(jump * j + i) % whole_len] for j in range(batchsize)]))
-        t = chainer.Variable(np.asarray(
+        t = chainer.Variable(xp.asarray(
             [train_data[(jump * j + i + 1) % whole_len] for j in range(batchsize)]))
 
         # lossの計算
