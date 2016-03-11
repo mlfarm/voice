@@ -14,8 +14,10 @@ if __name__ == '__main__':
     files = os.listdir('data/pending')
 
     #   Iterate all files
+    counter = 0
     for f in files:
-        print("parsing {}".format(f))
+        count += 1
+        print("{}/{} parsing {}".format(count, len(files), f))
 
         #   Get basename
         basename = '.'.join(f.split('.')[:-1])
@@ -52,7 +54,6 @@ if __name__ == '__main__':
         # ------------------------------
         #   encode
         # ------------------------------
-        print("    Encode")
         fin = open(os.path.join('data/power', basename + '.power'), 'rb')
         fout = open(os.path.join('data/encode', basename + '.bin'), 'wb')
 
