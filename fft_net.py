@@ -25,8 +25,9 @@ def load_latest():
 
     if len(params) > 0:
         serializers.load_hdf5(os.path.join(d_fft_model, params[-1]), model)
-
-    return model
+        return model, params[-1]
+    else:
+        return model, None
 
 def save(model):
     path = os.path.join(d_fft_model, '{}'.format(int(time.time())))

@@ -27,13 +27,16 @@ def prepare_fft():
 
     count = 0
 
+    file_list = os.listdir('fft')
+    perm = np.random.permutation(len(file_list))
+
     for i in perm:
         count += 1
         f = file_list[i]
 
         print(count, f)
 
-        fin = open(os.path.join('../fft', f), 'rb')
+        fin = open(os.path.join('fft', f), 'rb')
 
         buf = fin.read()
 
@@ -46,7 +49,7 @@ def prepare_fft():
 
             if index % N == 0:
                 print("========== SAVING ==========")
-                np.save('../fft-prep/{}'.format(fcount), ffts)
+                np.save('fft-prep/{}'.format(fcount), ffts)
                 fcount += 1
                 index = 0
 

@@ -14,13 +14,13 @@ import fft_net as net
 
 #   Warningを表示する
 import warnings
-#warnings.simplefilter("error")
+warnings.simplefilter("error")
 
 # ========== モデルのロード ==========
 model = net.load_latest()
-cuda.get_device(0).use()
-model.to_gpu()
-xp = cuda.cupy
+# cuda.get_device(0).use()
+# model.to_gpu()
+xp = np
 
 # ========== 最適化 ==========
 optimizer = optimizers.Adam()
@@ -47,13 +47,13 @@ def evaluate(dataset):
 # 基本設定
 batchsize = 20
 bprop_len = 30
-n_epoch = 10
-n_refresh = 13
+n_epoch = 2
+n_refresh = 105
 
 for refresh in range(n_refresh):
     # ========== データのロード ==========
     print("Loading Data")
-    train_data, test_data = np.split(data.load_log_fft(), [8000])
+    train_data, test_data = np.split(data.load_fft(), [8000])
     print("Done")
     
     # 学習データの大きさ
@@ -90,6 +90,7 @@ for refresh in range(n_refresh):
             model.zerograds()
             sum_loss.backward()
             sum_loss = 0
+            optimizer.clip_grads(5)
             optimizer.update()
 
         if (i + 1) % 10000 == 0:
