@@ -21,15 +21,12 @@ if __name__ == '__main__':
         basename = '.'.join(f.split('.')[:-1])
 
         #   Move the pending file to wave file
-        print("    Writing wave file")
         os.rename(os.path.join('data/pending', f), os.path.join('data/wave', basename + '.wav'))
 
         # ------------------------------
         #   convert to float
         # ------------------------------
-        print("    Convert to float")
         wf = wave.open(os.path.join('data/wave', basename + '.wav'))
-        ff = open(os.path.join('data/float', basename + '.float'), 'wb')
 
         #   read data
         x = wf.readframes(wf.getnframes())
@@ -41,12 +38,13 @@ if __name__ == '__main__':
         x = np.frombuffer(x, dtype='int16') / 32768.0
 
         #   write
+        ff = open(os.path.join('data/float', basename + '.float'), 'wb')
         ff.write(struct.pack('f' * len(x), *x))
+        ff.close()
 
         # ------------------------------
         #   power spectrum
         # ------------------------------
-        print("    FFT")
         fftProc = subprocess.Popen('frame -l 1024 -p 256 < {} | window -l 1024 | fftr -l 1024 -P > {}'
             .format(os.path.join('data/float', basename + '.float'), os.path.join('data/power', basename + '.power')), stdout=subprocess.PIPE, shell=True)
         fftProc.wait()
@@ -67,3 +65,4 @@ if __name__ == '__main__':
 
             buf = fin.read(1024 * 4)
         fin.close()
+        fout.close()
