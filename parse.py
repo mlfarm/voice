@@ -14,7 +14,7 @@ if __name__ == '__main__':
     files = os.listdir('data/pending')
 
     #   Iterate all files
-    counter = 0
+    count = 0
     for f in files:
         count += 1
         print("{}/{} parsing {}".format(count, len(files), f))
