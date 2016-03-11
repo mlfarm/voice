@@ -60,7 +60,7 @@ if __name__ == '__main__':
 
         buf = fin.read(1024 * 4)
         while len(buf) != 0:
-            x = chainer.Variable(np.asarray([struct.unpack('f' * 1024, buf)], dtype=np.float32))
+            x = chainer.Variable(np.asarray([struct.unpack('f' * 1024, buf)], dtype=np.float32), volatile='on')
             enc = model.encode(x).data[0]
             fout.write(struct.pack('f' * 64, *enc))
             fout.flush()
