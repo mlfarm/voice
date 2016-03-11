@@ -12,7 +12,7 @@ from chainer import serializers
 import autoencoder
 
 # Directory
-d_fft_model = 'fft-model'
+d_fft_model = 'data/fft-model'
 
 def load_new():
     return autoencoder.RMLAE(dims=(1024, 256, 64, 256), noise=0.1)
