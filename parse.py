@@ -56,7 +56,7 @@ if __name__ == '__main__':
         # ------------------------------
         print("    Encode")
         fin = open(os.path.join('data/power', basename + '.power'), 'rb')
-        fout = open(ps.path.join('data/encode', basename + '.bin'), 'wb')
+        fout = open(os.path.join('data/encode', basename + '.bin'), 'wb')
 
         buf = fin.read(1024 * 4)
         while len(buf) != 0:
