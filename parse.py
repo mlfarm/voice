@@ -55,6 +55,7 @@ if __name__ == '__main__':
         # ------------------------------
         #   encode
         # ------------------------------
+        model.reset_state()
         fin = open(os.path.join('data/power', basename + '.power'), 'rb')
         fout = open(os.path.join('data/encode', basename + '.bin'), 'wb')
 
