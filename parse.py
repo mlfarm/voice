@@ -11,7 +11,8 @@ model, timestamp = net.load_latest()
 
 if __name__ == '__main__':
     #   List all files need to process
-    files = os.listdir('data/pending').sort()
+    files = os.listdir('data/pending')
+    files.sort()
 
     #   Iterate all files
     count = 0
