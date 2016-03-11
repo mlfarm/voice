@@ -9,6 +9,54 @@ import subprocess
 
 model, timestamp = net.load_latest()
 
+def raw2float(infile, output):
+    """
+        convert raw file to float file
+    """
+    wf = wave.open(infile)
+
+    #   read data
+    x = wf.readframes(wf.getnframes())
+
+    #   close file
+    wf.close()
+
+    #   convert to [-1, 1]
+    x = np.frombuffer(x, dtype='int16') / 32768.0
+
+    #   write
+    ff = open(outfile, 'wb')
+    ff.write(struct.pack('f' * len(x), *x))
+    ff.close()
+
+def float2power(infile, outfile):
+    """
+        take power spectrum of float file
+    """
+    fftProc = subprocess.Popen('frame -l 1024 -p 256 < {} | window -l 1024 | fftr -l 1024 -P > {}'
+        .format(infile, outfile), stdout=subprocess.PIPE, shell=True)
+    fftProc.wait()
+
+def encode(infile, outfile):
+    """
+        encode power spectrum
+            using latest parameter
+    """
+    model.reset_state()
+    fin = open(infile, 'rb')
+    fout = open(outfile, 'wb')
+
+    buf = fin.read(1024 * 4)
+    while len(buf) != 0:
+        x = chainer.Variable(np.asarray([struct.unpack('f' * 1024, buf)], dtype=np.float32), volatile='on')
+        enc = model.encode(x).data[0]
+        fout.write(struct.pack('f' * 64, *enc))
+        fout.flush()
+
+        buf = fin.read(1024 * 4)
+    fin.close()
+    fout.close()
+
 if __name__ == '__main__':
     #   List all files need to process
     files = os.listdir('data/pending')
@@ -29,43 +77,14 @@ if __name__ == '__main__':
         # ------------------------------
         #   convert to float
         # ------------------------------
-        wf = wave.open(os.path.join('data/wave', basename + '.wav'))
-
-        #   read data
-        x = wf.readframes(wf.getnframes())
-
-        #   close file
-        wf.close()
-
-        #   convert to [-1, 1]
-        x = np.frombuffer(x, dtype='int16') / 32768.0
-
-        #   write
-        ff = open(os.path.join('data/float', basename + '.float'), 'wb')
-        ff.write(struct.pack('f' * len(x), *x))
-        ff.close()
+        raw2float(os.path.join('data/wave', basename + '.wav'), os.path.join('data/float', basename + '.float'))
 
         # ------------------------------
         #   power spectrum
         # ------------------------------
-        fftProc = subprocess.Popen('frame -l 1024 -p 256 < {} | window -l 1024 | fftr -l 1024 -P > {}'
-            .format(os.path.join('data/float', basename + '.float'), os.path.join('data/power', basename + '.power')), stdout=subprocess.PIPE, shell=True)
-        fftProc.wait()
+        float2power(os.path.join('data/float', basename + '.float'), os.path.join('data/power', basename + '.power'))
 
         # ------------------------------
         #   encode
         # ------------------------------
-        model.reset_state()
-        fin = open(os.path.join('data/power', basename + '.power'), 'rb')
-        fout = open(os.path.join('data/encode', basename + '.bin'), 'wb')
-
-        buf = fin.read(1024 * 4)
-        while len(buf) != 0:
-            x = chainer.Variable(np.asarray([struct.unpack('f' * 1024, buf)], dtype=np.float32), volatile='on')
-            enc = model.encode(x).data[0]
-            fout.write(struct.pack('f' * 64, *enc))
-            fout.flush()
-
-            buf = fin.read(1024 * 4)
-        fin.close()
-        fout.close()
+        encode(os.path.join('data/power', basename + '.power'), os.path.join('data/encode', "{}_{}.bin".format(timestamp, basename))
