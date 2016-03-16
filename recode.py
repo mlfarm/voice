@@ -40,7 +40,7 @@ def load(filename):
     fin.close()
 
     ffts = []
-    
+
     for ind in range(0, len(buf), 1024 * 4):
         ffts.append(struct.unpack('f' * 1024, buf[ind:ind+1024*4]))
 
@@ -117,10 +117,6 @@ while True:
         if (i + 1) % 10000 == 0:
             print("Training loss: {}".format(log_loss / 10000))
             log_loss = 0
-
-        if (i + 1) % jump == 0:
-            epoch += 1
-            print("Epoch {}".format(epoch))
 
     save(model)
 
