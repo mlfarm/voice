@@ -56,7 +56,9 @@ def save(model):
 model, timestamp = net.load_latest()
 
 optimizer = optimizers.Adam()
+optimizer = optimizers.SGD(lr=.1)
 optimizer.setup(model)
+optimizer.add_hook(chainer.optimizer.GradientClipping(5.0))
 
 while True:
     stamp = int(time.time())
@@ -120,6 +122,7 @@ while True:
             log_loss = 0
 
     save(model)
+    optimizer.lr /= 1.2
 
     #   Erase
     os.remove("{}/{}.flv".format(tmp_dir, stamp))
