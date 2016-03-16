@@ -123,5 +123,5 @@ while True:
     #   Erase
     os.remove("{}/{}.flv".format(tmp_dir, stamp))
     os.remove("{}/{}.wav".format(tmp_dir, stamp))
-    os.remove("{}/{}.flat".format(tmp_dir, stamp))
+    os.remove("{}/{}.float".format(tmp_dir, stamp))
     os.remove("{}/{}.power".format(tmp_dir, stamp))
