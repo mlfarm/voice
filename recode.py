@@ -62,7 +62,7 @@ while True:
     stamp = int(time.time())
 
     #   Recode
-    subprocess.call("{} --rtmp {} --playpath aandg22 --app {} --timeout 5 --live --flv {}/{}.flv --stop 5".format(
+    subprocess.call("{} --rtmp {} --playpath aandg22 --app {} --timeout 5 --live --flv {}/{}.flv --stop 60".format(
         rtmp_path, rtmp_url, app_url, tmp_dir, stamp), stdout=subprocess.PIPE, shell=True)
 
     #   Convert to wav
