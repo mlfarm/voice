@@ -136,7 +136,7 @@ while True:
     if not recode(basepath + '.flv'):
         continue
 
-    if not convert2float(basepath + '.flv', basepath + '.wav'):
+    if not convert2wav(basepath + '.flv', basepath + '.wav'):
         continue
 
     if not convert2float(basepath + '.wav', basepath + '.float'):
