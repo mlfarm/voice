@@ -63,3 +63,6 @@ target/
 
 #original
 /data/*
+/data-backup/*
+/encode-model/*
+data.zip
