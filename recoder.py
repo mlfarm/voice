@@ -87,6 +87,13 @@ def save(model):
 
 def learn(datapath):
     print("Learning from {}".format(datapath))
+
+    #   Learning
+    batchsize = 20
+    bprop_len = 30
+    n_epoch = 2
+    n_refresh = 105
+    
     d = load(datapath)
 
     whole_len = d.shape[0]
