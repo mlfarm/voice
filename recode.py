@@ -39,6 +39,8 @@ def load(filename):
     buf = fin.read()
     fin.close()
 
+    ffts = []
+    
     for ind in range(0, len(buf), 1024 * 4):
         ffts.append(struct.unpack('f' * 1024, buf[ind:ind+1024*4]))
 
