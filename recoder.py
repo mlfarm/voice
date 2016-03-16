@@ -33,12 +33,12 @@ def recode(path):
     subprocess.call("rtmpdump --rtmp {} --playpath aandg22 --app {} --timeout 5 --live --flv {} --stop 60".format(
         rtmp_url, app_url, path), stdout=subprocess.PIPE, shell=True)
 
-    return os.isfile(path)
+    return os.path.isfile(path)
 
 def convert2wav(inpath, outpath):
     subprocess.call("ffmpeg -y -i {} -ac 1 -ar 44100 {}".format(inpath, outpath), stdout=subprocess.PIPE, shell=True)
 
-    return os.isfile(outpath)
+    return os.path.isfile(outpath)
 
 def convert2float(inpath, outpath):
     #   Convert to float
@@ -58,7 +58,7 @@ def convert2float(inpath, outpath):
     ff.write(struct.pack('f' * len(x), *x))
     ff.close()
 
-    return os.isfile(outpath)
+    return os.path.isfile(outpath)
 
 def convert2power(inpath, outpath):
     subprocess.call('frame -l 1024 -p 256 < {} | window -l 1024 | fftr -l 1024 -P > {}'.format(inpath, outpath), stdout=subprocess.PIPE, shell=True)
@@ -121,7 +121,7 @@ def learn(datapath):
 # ------------------------------
 while True:
     #   Make sure tmp folder exists
-    if not os.isdir(tmp_dir):
+    if not os.path.isdir(tmp_dir):
         os.mkdir(tmp_dir)
 
     #   Erase any content of folder
