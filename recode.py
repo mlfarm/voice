@@ -21,7 +21,7 @@ rtmp_path = "rtmpdump"
 rtmp_url = "rtmpe://fms1.uniqueradio.jp/"
 app_url = "?rtmp://fms-base1.mitene.ad.jp/agqr/"
 #tmp_dir = "C:\\Users\\Jin\\dev\\mlfarm\\agqr\\tmp"
-tmp_dir = "/home/jyori112/dev/mlfarm/voice/tmp"
+tmp_dir = "tmp"
 #ffmpeg_path = "C:\\Users\\Jin\\ffmpeg\\bin\\ffmpeg.exe"
 ffmpeg_path = "ffmpeg"
 
