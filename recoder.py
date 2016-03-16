@@ -42,7 +42,7 @@ def convert2wav(inpath, outpath):
 
 def convert2float(inpath, outpath):
     #   Convert to float
-    wf = wave.open("{}/{}.wav".format(tmp_dir, stamp))
+    wf = wave.open(inpath)
 
     #   read data
     x = wf.readframes(wf.getnframes())
@@ -54,7 +54,7 @@ def convert2float(inpath, outpath):
     x = np.frombuffer(x, dtype='int16') / 32768.0
 
     #   write
-    ff = open("{}/{}.float".format(tmp_dir, stamp), 'wb')
+    ff = open(outpath, 'wb')
     ff.write(struct.pack('f' * len(x), *x))
     ff.close()
 
