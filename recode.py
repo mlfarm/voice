@@ -110,7 +110,7 @@ while True:
             print(sum_loss.data / bprop_len)
             model.zerograds()
             sum_loss.backward()
-            accum_loss.unchain_backward()
+            sum_loss.unchain_backward()
             optimizer.update()
 
             sum_loss = 0
