@@ -17,7 +17,7 @@ import encode_net as net
 # ------------------------------
 #   Recording
 #rtmp_path = "C:\\Users\\Jin\\rtmpdump\\rtmpdump.exe"
-rtmp_path = "rtmp"
+rtmp_path = "rtmpdump"
 rtmp_url = "rtmpe://fms1.uniqueradio.jp/"
 app_url = "?rtmp://fms-base1.mitene.ad.jp/agqr/"
 tmp_dir = "C:\\Users\\Jin\\dev\\mlfarm\\agqr\\tmp"
