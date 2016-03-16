@@ -61,10 +61,10 @@ while True:
 
     #   Recode
     subprocess.call("{} --rtmp {} --playpath aandg22 --app {} --timeout 5 --live --flv {}/{}.flv --stop 5".format(
-        rtmp_path, rtmp_url, app_url, tmp_dir, stamp),stdout=subprocess.PIPE, shell=False)
+        rtmp_path, rtmp_url, app_url, tmp_dir, stamp), stdout=subprocess.PIPE, shell=True)
 
     #   Convert to wav
-    subprocess.call("{} -y -i {}/{}.flv -ac 1 -ar 44100 {}/{}.wav".format(ffmpeg_path, tmp_dir, stamp, tmp_dir, stamp), shell=False)
+    subprocess.call("{} -y -i {}/{}.flv -ac 1 -ar 44100 {}/{}.wav".format(ffmpeg_path, tmp_dir, stamp, tmp_dir, stamp), stdout=subprocess.PIPE, shell=True)
 
     #   Convert to float
     wf = wave.open("{}/{}.wav".format(tmp_dir, stamp))
@@ -84,7 +84,7 @@ while True:
     ff.close()
 
     #   Convert to fft
-    subprocess.call('frame -l 1024 -p 256 < {}/{}.float | window -l 1024 | fftr -l 1024 -P > {}/{}.power'.format(tmp_dir, stamp, tmp_dir, stamp))
+    subprocess.call('frame -l 1024 -p 256 < {}/{}.float | window -l 1024 | fftr -l 1024 -P > {}/{}.power'.format(tmp_dir, stamp, tmp_dir, stamp), stdout=subprocess.PIPE, shell=True)
 
     #   Learn
     d = load("{}/{}.power".format(tmp_dir, stamp))
