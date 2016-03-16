@@ -120,13 +120,12 @@ def learn(datapath):
 #   Loop
 # ------------------------------
 while True:
-    #   Erase any content of folder
-    shutil.rmtree(tmp_dir)
-
     #   Make sure tmp folder exists
     if not os.path.isdir(tmp_dir):
         os.mkdir(tmp_dir)
 
+    os.system("rm {}/*".format(tmp_dir))
+    
     basepath = os.path.join(tmp_dir, "{}".format(int(time.time())))
 
     if not recode(basepath + '.flv'):
