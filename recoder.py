@@ -30,17 +30,20 @@ optimizer.setup(model)
 optimizer.add_hook(chainer.optimizer.GradientClipping(5.0))
 
 def recode(path):
+    print("Recoding")
     subprocess.call("rtmpdump --rtmp {} --playpath aandg22 --app {} --timeout 5 --live --flv {} --stop 60".format(
         rtmp_url, app_url, path), stdout=open(os.devnull, 'w'), shell=True)
 
     return os.path.isfile(path)
 
 def convert2wav(inpath, outpath):
+    print("Converting to wav")
     subprocess.call("ffmpeg -y -i {} -ac 1 -ar 44100 {}".format(inpath, outpath), stdout=open(os.devnull, 'w'), shell=True)
 
     return os.path.isfile(outpath)
 
 def convert2float(inpath, outpath):
+    print("Converting to float")
     #   Convert to float
     wf = wave.open(inpath)
 
@@ -61,6 +64,7 @@ def convert2float(inpath, outpath):
     return os.path.isfile(outpath)
 
 def convert2power(inpath, outpath):
+    print("Converting to power")
     subprocess.call('frame -l 1024 -p 256 < {} | window -l 1024 | fftr -l 1024 -P > {}'.format(inpath, outpath), stdout=open(os.devnull, 'w'), shell=True)
 
     return os.path.isfile(outpath)
@@ -82,6 +86,7 @@ def save(model):
     serializers.save_hdf5(path, model)
 
 def learn(datapath):
+    print("Learning")
     d = load(datapath)
 
     whole_len = d.shape[0]
