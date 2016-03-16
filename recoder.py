@@ -43,7 +43,7 @@ def recode(path):
 def convert2wav(inpath, outpath):
     print("Converting to wav: {} -> {}".format(inpath, outpath))
     result = subprocess.call("ffmpeg -y -i {} -ac 1 -ar 44100 {}".format(inpath, outpath), 
-                    stdout=subprocess.PIPE, stderr=subprocess.PIPE stdout=open(os.devnull, 'w'), shell=True)
+                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
 
     if result == 0:
         return True
