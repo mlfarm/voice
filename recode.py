@@ -16,11 +16,13 @@ import encode_net as net
 #   Configuration
 # ------------------------------
 #   Recording
-rtmp_path = "C:\\Users\\Jin\\rtmpdump\\rtmpdump.exe"
+#rtmp_path = "C:\\Users\\Jin\\rtmpdump\\rtmpdump.exe"
+rtmp_path = "rtmp"
 rtmp_url = "rtmpe://fms1.uniqueradio.jp/"
 app_url = "?rtmp://fms-base1.mitene.ad.jp/agqr/"
 tmp_dir = "C:\\Users\\Jin\\dev\\mlfarm\\agqr\\tmp"
-ffmpeg_path = "C:\\Users\\Jin\\ffmpeg\\bin\\ffmpeg.exe"
+#ffmpeg_path = "C:\\Users\\Jin\\ffmpeg\\bin\\ffmpeg.exe"
+ffmpeg_path = "ffmpeg"
 
 #   Learning
 batchsize = 20
