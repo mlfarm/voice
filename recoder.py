@@ -31,17 +31,24 @@ optimizer.add_hook(chainer.optimizer.GradientClipping(5.0))
 
 def recode(path):
     print("Recoding to {}".format(path))
-    subprocess.call("rtmpdump --rtmp {} --playpath aandg22 --app {} --timeout 5 --live --flv {} --stop 60".format(
-        rtmp_url, app_url, path), stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    
+    result = subprocess.call("rtmpdump --rtmp {} --playpath aandg22 --app {} --timeout 5 --live --flv {} --stop 60".format(
+                    rtmp_url, app_url, path), stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
-    return os.path.isfile(path)
+    if result == 0:
+        return True
+    else:
+        return False
 
 def convert2wav(inpath, outpath):
     print("Converting to wav: {} -> {}".format(inpath, outpath))
-    subprocess.call("ffmpeg -y -i {} -ac 1 -ar 44100 {}".format(inpath, outpath), 
-        stdout=subprocess.PIPE, stderr=subprocess.PIPE stdout=open(os.devnull, 'w'), shell=True)
+    result = subprocess.call("ffmpeg -y -i {} -ac 1 -ar 44100 {}".format(inpath, outpath), 
+                    stdout=subprocess.PIPE, stderr=subprocess.PIPE stdout=open(os.devnull, 'w'), shell=True)
 
-    return os.path.isfile(outpath)
+    if result == 0:
+        return True
+    else:
+        return False
 
 def convert2float(inpath, outpath):
     print("Converting to float: {} -> {}".format(inpath, outpath))
@@ -66,10 +73,14 @@ def convert2float(inpath, outpath):
 
 def convert2power(inpath, outpath):
     print("Converting to power: {} -> {}".format(inpath, outpath))
-    subprocess.call('frame -l 1024 -p 256 < {} | window -l 1024 | fftr -l 1024 -P > {}'.format(inpath, outpath), 
-        stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    
+    result = subprocess.call('frame -l 1024 -p 256 < {} | window -l 1024 | fftr -l 1024 -P > {}'.format(inpath, outpath), 
+                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
-    return os.path.isfile(outpath)
+    if result == 0:
+        return True
+    else:
+        return False
 
 def load(filename):
     fin = open(filename, 'rb')
