@@ -31,12 +31,12 @@ optimizer.add_hook(chainer.optimizer.GradientClipping(5.0))
 
 def recode(path):
     subprocess.call("rtmpdump --rtmp {} --playpath aandg22 --app {} --timeout 5 --live --flv {} --stop 60".format(
-        rtmp_url, app_url, path), stdout=subprocess.PIPE, shell=True)
+        rtmp_url, app_url, path), stdout=open(os.devnull, 'w'), shell=True)
 
     return os.path.isfile(path)
 
 def convert2wav(inpath, outpath):
-    subprocess.call("ffmpeg -y -i {} -ac 1 -ar 44100 {}".format(inpath, outpath), stdout=subprocess.PIPE, shell=True)
+    subprocess.call("ffmpeg -y -i {} -ac 1 -ar 44100 {}".format(inpath, outpath), stdout=open(os.devnull, 'w'), shell=True)
 
     return os.path.isfile(outpath)
 
@@ -61,7 +61,7 @@ def convert2float(inpath, outpath):
     return os.path.isfile(outpath)
 
 def convert2power(inpath, outpath):
-    subprocess.call('frame -l 1024 -p 256 < {} | window -l 1024 | fftr -l 1024 -P > {}'.format(inpath, outpath), stdout=subprocess.PIPE, shell=True)
+    subprocess.call('frame -l 1024 -p 256 < {} | window -l 1024 | fftr -l 1024 -P > {}'.format(inpath, outpath), stdout=open(os.devnull, 'w'), shell=True)
 
     return os.path.isfile(outpath)
 
