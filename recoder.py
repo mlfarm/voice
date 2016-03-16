@@ -63,7 +63,7 @@ def convert2float(inpath, outpath):
 def convert2power(inpath, outpath):
     subprocess.call('frame -l 1024 -p 256 < {} | window -l 1024 | fftr -l 1024 -P > {}'.format(inpath, outpath), stdout=subprocess.PIPE, shell=True)
 
-    return os.isfile(outpath)
+    return os.path.isfile(outpath)
 
 def load(filename):
     fin = open(filename, 'rb')
@@ -125,7 +125,7 @@ while True:
         os.mkdir(tmp_dir)
 
     os.system("rm {}/*".format(tmp_dir))
-    
+
     basepath = os.path.join(tmp_dir, "{}".format(int(time.time())))
 
     if not recode(basepath + '.flv'):
