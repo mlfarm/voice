@@ -272,13 +272,13 @@ if __name__ == '__main__':
         learn(basepath + '.power')
         print("Done: {} sec".format(time.time() - start))
 
-        start = time.time()
-        evaluate()
-        print("Done: {} sec".format(time.time() - start))
-
         if loop_count % 10 == 0:
             start = time.time()
-            update_evaluation()
+            evaluate()
             print("Done: {} sec".format(time.time() - start))
+
+        start = time.time()
+        update_evaluation()
+        print("Done: {} sec".format(time.time() - start))
 
         print("Time: {} sec".format(time.time() - loopstart))
