@@ -232,7 +232,7 @@ if __name__ == '__main__':
         #if now.hour == 4 or now.hour == 5:
         #    time.sleep(60 * 60 * 2)
 
-        start = time.time()
+        loopstart = time.time()
 
         #   Make sure tmp folder exists
         if not os.path.isdir(tmp_dir):
@@ -245,22 +245,36 @@ if __name__ == '__main__':
 
         print("")
         print("---------- Process of {} ----------".format(basepath))
+        start = time.time()
         if not recode(basepath + '.flv'):
             continue
+        print("Done: {} sec".format(time.time() - start))
 
+        start = time.time()
         if not convert2wav(basepath + '.flv', basepath + '.wav'):
             continue
+        print("Done: {} sec".format(time.time() - start))
 
+        start = time.time()
         if not convert2float(basepath + '.wav', basepath + '.float'):
             continue
+        print("Done: {} sec".format(time.time() - start))
 
+        start = time.time()
         if not convert2power(basepath + '.float', basepath + '.power'):
             continue
+        print("Done: {} sec".format(time.time() - start))
 
+        start = time.time()
         learn(basepath + '.power')
+        print("Done: {} sec".format(time.time() - start))
 
+        start = time.time()
         evaluate()
+        print("Done: {} sec".format(time.time() - start))
 
+        start = time.time()
         update_evaluation()
+        print("Done: {} sec".format(time.time() - start))
 
-        print("Time: {} sec".format(time.time() - start))
+        print("Time: {} sec".format(time.time() - loopstart))
