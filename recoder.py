@@ -233,6 +233,8 @@ if __name__ == '__main__':
 
         basepath = os.path.join(tmp_dir, "{}".format(int(time.time())))
 
+        print("")
+        print("---------- Process of {} ----------".format(basepath))
         if not recode(basepath + '.flv'):
             continue
 
