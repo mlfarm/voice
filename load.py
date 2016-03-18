@@ -231,6 +231,7 @@ if __name__ == '__main__':
 
         os.system("rm {}/*".format(tmp_dir))
 
+        stamp = int(time.time())
         basepath = os.path.join(tmp_dir, "{}".format(int(time.time())))
 
         if not recode(basepath + '.flv'):
@@ -242,13 +243,6 @@ if __name__ == '__main__':
         if not convert2float(basepath + '.wav', basepath + '.float'):
             continue
 
-        if not convert2power(basepath + '.float', basepath + '.power'):
+        if not convert2power(basepath + '.float', "evaluation/{}.power".format(stamp)):
             continue
-
-        learn(basepath + '.power')
-
-        evaluate()
-
-        if np.random.random() < 0.01:
-            #   1% to change data
             
