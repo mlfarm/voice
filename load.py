@@ -224,7 +224,7 @@ def update_evaluation():
 #   Loop
 # ------------------------------
 if __name__ == '__main__':
-    while True:
+    for i in range(10):
         #   Make sure tmp folder exists
         if not os.path.isdir(tmp_dir):
             os.mkdir(tmp_dir)
