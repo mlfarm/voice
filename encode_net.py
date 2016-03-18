@@ -14,8 +14,8 @@ class Encoder(chainer.Chain):
         super(Encoder, self).__init__(
             enc1=L.LSTM(1024, 256),
             enc2=L.LSTM(256, 64),
-            dec1=L.Linear(64, 256),
-            dec2=L.Linear(256, 1024)
+            dec2=L.Linear(64, 256),
+            dec1=L.Linear(256, 1024)
         )
 
         self.train = train
