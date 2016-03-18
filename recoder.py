@@ -225,8 +225,11 @@ def update_evaluation():
 # ------------------------------
 #   Loop
 # ------------------------------
+loop_count = 0
 if __name__ == '__main__':
     while True:
+        loop_count += 1
+
         #   Check time
         now = datetime.now(timezone('Japan'))
         #if now.hour == 4 or now.hour == 5:
@@ -273,8 +276,9 @@ if __name__ == '__main__':
         evaluate()
         print("Done: {} sec".format(time.time() - start))
 
-        start = time.time()
-        update_evaluation()
-        print("Done: {} sec".format(time.time() - start))
+        if loop_count % 10:
+            start = time.time()
+            update_evaluation()
+            print("Done: {} sec".format(time.time() - start))
 
         print("Time: {} sec".format(time.time() - loopstart))
