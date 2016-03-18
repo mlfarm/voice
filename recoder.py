@@ -32,7 +32,7 @@ optimizer.add_hook(chainer.optimizer.GradientClipping(5.0))
 def recode(path):
     print("Recoding to {}".format(path))
     
-    result = subprocess.call("rtmpdump --rtmp {} --playpath aandg22 --app {} --timeout 5 --live --flv {} --stop 60".format(
+    result = subprocess.call("rtmpdump --rtmp {} --playpath aandg22 --app {} --timeout 5 --live --flv {} --stop 5".format(
                     rtmp_url, app_url, path), stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
     if result == 0:
@@ -142,7 +142,7 @@ def learn(datapath):
     enc = np.ndarray(shape=(d.shape[0], 64), dtype=np.float32)
     for i in range(d.shape[0]):
         print("D", d[i:i+1].shape)
-        x = chainer.Variable(np.asarray([d[i:i+1]]))
+        x = chainer.Variable(np.asarray(d[i:i+1]))
         enc[i] = model.encode1(x).data[0]
 
     print("Learning Second Layer")
