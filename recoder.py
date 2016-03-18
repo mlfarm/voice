@@ -229,7 +229,7 @@ if __name__ == '__main__':
     while True:
         #   Check time
         now = datetime.now(timezone('Japan'))
-        if now.hour == 4 || now.hour == 5:
+        #if now.hour == 4 or now.hour == 5:
         #    time.sleep(60 * 60 * 2)
 
         start = time.time()
