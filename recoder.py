@@ -276,7 +276,7 @@ if __name__ == '__main__':
         evaluate()
         print("Done: {} sec".format(time.time() - start))
 
-        if loop_count % 10:
+        if loop_count % 10 == 0:
             start = time.time()
             update_evaluation()
             print("Done: {} sec".format(time.time() - start))
