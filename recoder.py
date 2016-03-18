@@ -202,7 +202,7 @@ def evaluate():
             enc[i] = model.encode1(x).data[0]
 
         #   Evaluate second layer
-        for i in range(data.shape[0]-1):
+        for i in range(enc.shape[0]-1):
             x = chainer.Variable(np.asarray([enc[i]]), volatile='on')
             t = chainer.Variable(np.asarray([enc[i+1]]), volatile='on')
 
