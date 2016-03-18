@@ -183,7 +183,7 @@ def evaluate():
     layer2_loss = 0
 
     for f in os.listdir('evaluation'):
-        data = load(f)
+        data = load(os.path.join('evaluation', f))
 
         total_len += data.shape[0]
 
