@@ -206,7 +206,7 @@ def evaluate():
             x = chainer.Variable(np.asarray([enc[i]]), volatile='on')
             t = chainer.Variable(np.asarray([enc[i+1]]), volatile='on')
 
-            layer2_loss += evaluator.layer1(x, t).data
+            layer2_loss += evaluator.layer2(x, t).data
 
     print("Layer 1 evaluation loss {}".format(layer1_loss / total_len))
     print("Layer 2 evaluation loss {}".format(layer2_loss / total_len))
