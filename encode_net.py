@@ -9,27 +9,41 @@ import chainer.links as L
 import chainer.functions as F
 from chainer import serializers
 
-class RAE(chainer.Chain):
-    def __init__(self, dims, train=True, noise=0.0, activation=None):
-        super(RAE, self).__init__(
-            enc=L.LSTM(dims[0], dims[1]),
-            dec=L.Linear(dims[1], dims[0])
+class Encoder(chainer.Chain):
+    def __init__(self, train=True):
+        super(Encoder, self).__init__(
+            enc1=L.LSTM(1024, 256),
+            enc2=L.LSTM(256, 64),
+            dec1=L.Linear(64, 256),
+            dec2=L.Linear(256, 1024)
         )
 
         self.train = train
-        self.noise = noise
-        self.activation = activation
 
-    def __call__(self, x, t):
-        self.y = self.enc(F.dropout(x, train=self.train))
-        self.t = self.dec(F.dropout(self.y, train=self.train))
+    def layer1(self, x, t):
+        self.y1 = self.enc1(F.dropout(x, train=self.train))
+        self.t1 = self.dec1(F.dropout(self.y1, train=self.train))
 
-        self.loss = F.mean_squared_error(t, self.t)
+        self.loss1 = F.mean_squared_error(t, self.t1)
 
-        return self.loss
+        return self.loss1
+
+    def layer2(self, x, t):
+        self.y2 = self.enc2(F.dropout(x, train=self.train))
+        self.t2 = self.dec2(F.dropout(self.y2, train=self.train))
+
+        self.loss2 = F.mean_squared_error(t, self.t2)
+
+        return self.loss2
+
+    def encode1(self, x):
+        return self.enc1(x)
+
+    def encode2(self, x):
+        return self.enc2(x)
 
 def load_new():
-    return RAE(dims=(1024, 256), noise=0.01)
+    return Encoder(dims=(1024, 256), noise=0.01)
 
 def load_latest():
     model = load_new()

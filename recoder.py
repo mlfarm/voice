@@ -114,13 +114,14 @@ def learn(datapath):
     sum_loss = 0
     log_loss = 0
 
+    print("Learning First Layer")
     for i in range(jump):
         x = chainer.Variable(np.asarray(
             [d[(jump * j + i) % whole_len] for j in range(batchsize)]))
         t = chainer.Variable(np.asarray(
             [d[(jump * j + i + 1) % whole_len] for j in range(batchsize)]))
 
-        loss_i = model(x, t)
+        loss_i = model.layer1(x, t)
         sum_loss += loss_i
         log_loss += loss_i.data
 
@@ -136,6 +137,37 @@ def learn(datapath):
         if (i + 1) % 10000 == 0:
             print("Training loss: {}".format(log_loss / 10000))
             log_loss = 0
+
+    print("Encoding First Layer")
+    enc = np.ndarray((d.shape[0], 64), dtype=np.float32)
+    for i in range(d.shape[0]):
+        x = chainer.Variable(np.asarray([d[i:i+1]]))
+        enc[i] = model.encode1(x).data
+
+    print("Learning Second Layer")
+    for i in range(jump):
+        x = chainer.Variable(np.asarray(
+            [enc[(jump * j + i) % whole_len] for j in range(batchsize)]))
+        t = chainer.Variable(np.asarray(
+            [enc[(jump * j + i + 1) % whole_len] for j in range(batchsize)]))
+
+        loss_i = model.layer2(x, t)
+        sum_loss += loss_i
+        log_loss += loss_i.data
+
+        if (i + 1) % bprop_len == 0:
+            print(sum_loss.data / bprop_len)
+            model.zerograds()
+            sum_loss.backward()
+            sum_loss.unchain_backward()
+            optimizer.update()
+
+            sum_loss = 0
+
+        if (i + 1) % 10000 == 0:
+            print("Training loss: {}".format(log_loss / 10000))
+            log_loss = 0
+
 
     save(model)
     optimizer.lr /= 1.1
