@@ -32,7 +32,7 @@ optimizer.add_hook(chainer.optimizer.GradientClipping(5.0))
 def recode(path):
     print("Recoding to {}".format(path))
     
-    result = subprocess.call("rtmpdump --rtmp {} --playpath aandg22 --app {} --timeout 5 --live --flv {} --stop 5".format(
+    result = subprocess.call("rtmpdump --rtmp {} --playpath aandg22 --app {} --timeout 5 --live --flv {} --stop 60".format(
                     rtmp_url, app_url, path), stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
     if result == 0:
@@ -115,6 +115,7 @@ def learn(datapath):
     log_loss = 0
 
     print("Learning First Layer")
+    model.reset_state()
     for i in range(jump):
         x = chainer.Variable(np.asarray(
             [d[(jump * j + i) % whole_len] for j in range(batchsize)]))
@@ -139,12 +140,14 @@ def learn(datapath):
             log_loss = 0
 
     print("Encoding First Layer")
-    enc = np.ndarray(shape=(d.shape[0], 64), dtype=np.float32)
+    model.reset_state()
+    enc = np.ndarray(shape=(d.shape[0], 256), dtype=np.float32)
     for i in range(d.shape[0]):
         x = chainer.Variable(np.asarray([d[i]]))
         enc[i] = model.encode1(x).data[0]
 
     print("Learning Second Layer")
+    model.reset_state()
     for i in range(jump):
         x = chainer.Variable(np.asarray(
             [enc[(jump * j + i) % whole_len] for j in range(batchsize)]))
@@ -176,25 +179,26 @@ def learn(datapath):
 # ------------------------------
 #   Loop
 # ------------------------------
-while True:
-    #   Make sure tmp folder exists
-    if not os.path.isdir(tmp_dir):
-        os.mkdir(tmp_dir)
+if __name__ == '__main__':
+    while True:
+        #   Make sure tmp folder exists
+        if not os.path.isdir(tmp_dir):
+            os.mkdir(tmp_dir)
 
-    os.system("rm {}/*".format(tmp_dir))
+        os.system("rm {}/*".format(tmp_dir))
 
-    basepath = os.path.join(tmp_dir, "{}".format(int(time.time())))
+        basepath = os.path.join(tmp_dir, "{}".format(int(time.time())))
 
-    if not recode(basepath + '.flv'):
-        continue
+        if not recode(basepath + '.flv'):
+            continue
 
-    if not convert2wav(basepath + '.flv', basepath + '.wav'):
-        continue
+        if not convert2wav(basepath + '.flv', basepath + '.wav'):
+            continue
 
-    if not convert2float(basepath + '.wav', basepath + '.float'):
-        continue
+        if not convert2float(basepath + '.wav', basepath + '.float'):
+            continue
 
-    if not convert2power(basepath + '.float', basepath + '.power'):
-        continue
+        if not convert2power(basepath + '.float', basepath + '.power'):
+            continue
 
-    learn(basepath + '.power')
+        learn(basepath + '.power')

@@ -37,11 +37,14 @@ class Encoder(chainer.Chain):
         return self.loss2
 
     def encode1(self, x):
-        print(x.data.shape)
         return self.enc1(x)
 
     def encode2(self, x):
         return self.enc2(x)
+
+    def reset_state(self):
+        self.enc1.reset_state()
+        self.enc2.reset_state()
 
 def load_new():
     return Encoder()
