@@ -43,7 +43,7 @@ class Encoder(chainer.Chain):
         return self.enc2(x)
 
 def load_new():
-    return Encoder(dims=(1024, 256), noise=0.01)
+    return Encoder()
 
 def load_latest():
     model = load_new()
