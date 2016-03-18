@@ -249,6 +249,4 @@ if __name__ == '__main__':
 
         evaluate()
 
-        if np.random.random() < 0.01:
-            #   1% to change data
-            
+        update_evaluation()
