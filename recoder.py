@@ -1,5 +1,7 @@
 #   encode: utf-8
 
+from datetime import datetime
+from pytz import timezone  
 import os
 import shutil
 import subprocess
@@ -225,11 +227,19 @@ def update_evaluation():
 # ------------------------------
 if __name__ == '__main__':
     while True:
+        #   Check time
+        now = datetime.now(timezone('Japan'))
+        if now.hour == 4 || now.hour == 5:
+        #    time.sleep(60 * 60 * 2)
+
+        start = time.time()
+
         #   Make sure tmp folder exists
         if not os.path.isdir(tmp_dir):
             os.mkdir(tmp_dir)
 
         os.system("rm {}/*".format(tmp_dir))
+
 
         basepath = os.path.join(tmp_dir, "{}".format(int(time.time())))
 
@@ -252,3 +262,5 @@ if __name__ == '__main__':
         evaluate()
 
         update_evaluation()
+
+        print("Time: {} sec".format(time.time() - start))
