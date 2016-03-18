@@ -196,7 +196,7 @@ def evaluate():
 
         #   Encode to second layer
         evaluator.reset_state()
-        enc = np.ndarray(shape=(d.shape[0], 256), dtype=np.float32)
+        enc = np.ndarray(shape=(data.shape[0], 256), dtype=np.float32)
         for i in range(d.shape[0]):
             x = chainer.Variable(np.asarray([data[i]]))
             enc[i] = model.encode1(x).data[0]
