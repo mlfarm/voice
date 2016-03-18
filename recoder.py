@@ -139,8 +139,9 @@ def learn(datapath):
             log_loss = 0
 
     print("Encoding First Layer")
-    enc = np.ndarray((d.shape[0], 64), dtype=np.float32)
+    enc = np.ndarray(shape=(d.shape[0], 64), dtype=np.float32)
     for i in range(d.shape[0]):
+        print(d[i:i+1].shape)
         x = chainer.Variable(np.asarray([d[i:i+1]]))
         enc[i] = model.encode1(x).data
 
