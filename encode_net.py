@@ -37,6 +37,7 @@ class Encoder(chainer.Chain):
         return self.loss2
 
     def encode1(self, x):
+        print(x.data.shape)
         return self.enc1(x)
 
     def encode2(self, x):
