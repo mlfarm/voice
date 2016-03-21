@@ -1,5 +1,6 @@
 #   encode: utf-8
 import voice
+import time
 
 db = voice.SpeakerDatabase()
 
