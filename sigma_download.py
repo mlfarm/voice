@@ -51,7 +51,7 @@ def convert2power(inpath, outpath):
     else:
         return False
 
-def load_data(filepath)
+def load_data(filepath):
     fin = open(filename, 'rb')
     buf = fin.read()
     fin.close()
