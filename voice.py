@@ -76,7 +76,7 @@ def load_power_data(filepath):
 
 def encode(inpath, outpath):
     #   Load data
-    data = load_data(inpath)
+    data = load_power_data(inpath)
 
     #   Reset model
     model.reset_state()
