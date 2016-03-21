@@ -66,3 +66,6 @@ target/
 /data-backup/*
 /encode-model/*
 data.zip
+/tmp/*
+/va/*
+/speaker/*
