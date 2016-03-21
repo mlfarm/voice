@@ -33,7 +33,7 @@ def load_talent(talent, name):
     index = 1
     while True:
         time.sleep(1.0)
-        if load('http://www.sigma7.co.jp/profile/mp3/{}_{0:0>2}.mp3'.format(talent, index)):
+        if load('sigma_' + talent, 'http://www.sigma7.co.jp/profile/mp3/{}_{:0>2}.mp3'.format(talent, index)):
             index += 1
         else:
             break
