@@ -108,7 +108,7 @@ def load(audioURL):
 
     return True
 
-def load(talent):
+def load_talent(talent):
     #   フリートーク
     time.sleep(1)
     load('http://www.sigma7.co.jp/profile/mp3/{}_f.mp3'.format(talent))
