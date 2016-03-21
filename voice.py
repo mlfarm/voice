@@ -75,6 +75,8 @@ def load_power_data(filepath):
     return np.asarray(ffts, dtype=np.float32)
 
 def encode(inpath, outpath):
+    print("Encodeing: {} -> {}".format(inpath, outpath))
+    
     #   Load data
     data = load_power_data(inpath)
 
