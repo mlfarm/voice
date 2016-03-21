@@ -9,6 +9,7 @@ import time
 import wave
 import numpy as np
 import struct
+import codecs
 
 import chainer
 from chainer import optimizers
@@ -98,7 +99,7 @@ class SpeakerDatabase(object):
         self.fileIndex = rawFileIndex
 
     def register(self, alias, name):
-        fp = open(self.index, 'r+')
+        fp = codecs.open(self.index, 'r+', 'utf-8')
 
         for line in fp:
             if line.split()[0] == alias:
@@ -108,7 +109,7 @@ class SpeakerDatabase(object):
         fp.close()
 
     def findByAlias(self, alias):
-        fp = open(self.index, 'r')
+        fp = codecs.open(self.index, 'r', 'utf-8')
 
         index = 0
         for line in fp:
@@ -122,7 +123,7 @@ class SpeakerDatabase(object):
 
     def addFile(self, alias, filepath):
         shutil.move(filepath, os.path.join('speaker/raw', os.path.basename(filepath)))
-        fp = open(self.fileIndex, 'a')
+        fp = codecs.open(self.fileIndex, 'a', 'utf-8')
         fp.write("{} {}\n".format(alias, os.path.basename(filepath)))
         fp.close()
 
