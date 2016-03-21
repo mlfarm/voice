@@ -1,6 +1,8 @@
 #   encode: utf-8
 import voice
 import time
+import os
+import subprocess
 
 db = voice.SpeakerDatabase()
 
