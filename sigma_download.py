@@ -18,9 +18,9 @@ def load(alias, audioURL):
 
     return True
 
-def load_talent(talent):
+def load_talent(talent, name):
     #   Register this talent
-    db.register('sigma_' + talent)
+    db.register('sigma_' + talent, name)
 
     #   フリートーク
     time.sleep(1)
