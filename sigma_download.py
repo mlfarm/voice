@@ -1,9 +1,19 @@
 #   encode: utf-8
+
+from datetime import datetime
+from pytz import timezone  
 import os
-import time
+import shutil
 import subprocess
+import time
+import wave
 import numpy as np
+import struct
+
 import chainer
+from chainer import optimizers
+from chainer import serializers
+
 import encode_net as net
 
 model, timestamp = net.load_latest()
