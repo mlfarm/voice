@@ -1,22 +1,34 @@
-import os
+import voice
 import struct
 import numpy as np
 import threading
+import time
 
+session = voice.Session()
+aliases = session.all_alias()
 
-fin = open('speaker/labeled.bin', 'rb')
-fout = open('speaker/random.bin', 'wb')
+threadCount = 0
 
-size = os.path.getsize('speaker/labeled.bin')
+def thread(alias, files):
+    global threadCount
+    threadCount += 1
+    print("Alias: {}".format(alias))
 
-whole_len = int(size / 258)
+    data = []
 
-perm = np.random.permutation(whole_len)
+    for f in files:
+        print(" File: {}".format(f + '.power.encode'))
+        data.extend(voice.encode(voice.load_power('data/power/' + f + '.power')))
 
-for index in range(whole_len):
-    fin.seek(perm[index] * 258)
-    fout.write(fin.read(258))
+    fout = open('data/speaker/' + alias + '.encode', 'wb')
+    x = np.asarray(data, dtype=np.float32).ravel()
+    fout.write(struct.pack('f' * len(x), *x))
+    threadCount -= 1
 
-    if index % 1000 == 0:
-        fout.flush()
-        print("{} / {} = {:.2}".format(index, whole_len, index / whole_len))
+for alias in aliases:
+    files = session.get_file_by_alias(alias)
+    t = threading.Thread(target=thread, args=(alias, files))
+    t.start()  
+
+    while threadCount > 10:
+        time.sleep(1)

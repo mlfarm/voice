@@ -3,7 +3,7 @@ import numpy as np
 import os
 import shutil
 import subprocess
-
+import codecs
 import chainer
 
 import wave
@@ -112,8 +112,8 @@ def encode_evaluate(power_data):
 #   Session class
 class Session(object):
     def __init__(self, speaker_index='data/default.speaker', file_index='data/default.file'):
-        self.speaker = open(speaker_index, 'r+')
-        self.file = open(file_index, 'r+')
+        self.speaker = codecs.open(speaker_index, 'r+', 'utf-8')
+        self.file = codecs.open(file_index, 'r+', 'utf-8')
 
     def close(self):
         """
