@@ -43,7 +43,7 @@ def recode(path):
         return False
 
 def convert2wav(inpath, outpath):
-    print("Converting to wav: {} -> {}".format(inpath, outpath))
+    #print("Converting to wav: {} -> {}".format(inpath, outpath))
     result = subprocess.call("ffmpeg -y -i {} -ac 1 -ar 44100 {}".format(inpath, outpath), 
                     stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
@@ -53,7 +53,7 @@ def convert2wav(inpath, outpath):
         return False
 
 def convert2float(inpath, outpath):
-    print("Converting to float: {} -> {}".format(inpath, outpath))
+    #print("Converting to float: {} -> {}".format(inpath, outpath))
     #   Convert to float
     wf = wave.open(inpath)
 
@@ -74,7 +74,7 @@ def convert2float(inpath, outpath):
     return os.path.isfile(outpath)
 
 def convert2power(inpath, outpath):
-    print("Converting to power: {} -> {}".format(inpath, outpath))
+    #print("Converting to power: {} -> {}".format(inpath, outpath))
     
     result = subprocess.call('frame -l 1024 -p 256 < {} | window -l 1024 | fftr -l 1024 -P > {}'.format(inpath, outpath), 
                     stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)

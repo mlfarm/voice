@@ -7,7 +7,7 @@ import numpy as np
 import time
 
 class SpeakerNN(chainer.Chain):
-    def __init__(self, train):
+    def __init__(self, train=True):
         super(SpeakerNN, self).__init__(
             l1=L.Linear(64, 32),
             l2=L.Linear(32, 32),
@@ -16,11 +16,11 @@ class SpeakerNN(chainer.Chain):
 
         self.train = train
 
-    def __call__(self, x, d):
+    def __call__(self, x):
         x.data = x.data / np.linalg.norm(x.data)
-        h1 = F.relu(self.l1(F.dropout(x, self.train)))
-        h2 = F.relu(self.l2(F.dropout(h1, self.train)))
-        h3 = F.relu(self.l3(F.dropout(h2, self.train)))
+        h1 = F.relu(self.l1(x))
+        h2 = F.relu(self.l2(h1))
+        h3 = F.relu(self.l3(h2))
 
         return h3;
 

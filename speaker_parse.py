@@ -1,19 +1,26 @@
 import voice
 import os
+import subprocess
+import threading
+import time
 
-files = os.listdir('speaker/raw')
+def threadRun(input, output):
+    global threadCount
+    subprocess.call("python encode.py {} {}".format(input, output), stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    threadCount -= 1
+
+files = os.listdir('speaker/power')
+
+threadCount = 0
+p = []
+index = 0
 
 for f in files:
-    basename = '.'.join(os.path.basename(f).split('.')[:-1])
+    print("Encoding: {}".format(f))
+    #subprocess.call("python encode.py {} {}".format(os.path.join('speaker/power', f), os.path.join('speaker/encode', '.'.join(f.split('.')[:-1]) + ".encode")))
+    t = threading.Thread(target=threadRun, args=(os.path.join('speaker/power', f), os.path.join('speaker/encode', '.'.join(f.split('.')[:-1]) + ".encode")))
+    t.start()
+    threadCount += 1
 
-    voice.convert2float(os.path.join('speaker/wav', basename + '.wav'), os.path.join('speaker/float', basename + '.float'))
-
-for f in files:
-    basename = '.'.join(os.path.basename(f).split('.')[:-1])
-
-    voice.convert2power(os.path.join('speaker/float', basename + '.float'), os.path.join('speaker/power', basename + '.power'))
-
-for f in files:
-    basename = '.'.join(os.path.basename(f).split('.')[:-1])
-
-    voice.encode(os.path.join('speaker/power', basename + '.power'), os.path.join('speaker/encode', basename))
+    while threadCount > 20:
+        time.sleep(1)

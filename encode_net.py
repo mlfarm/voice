@@ -13,44 +13,33 @@ class Encoder(chainer.Chain):
     def __init__(self, train=True):
         super(Encoder, self).__init__(
             enc1=L.LSTM(1024, 256),
-            enc2=L.LSTM(256, 64),
-            dec2=L.Linear(64, 256),
-            dec1=L.Linear(256, 1024)
+            enc2=L.Linear(256, 64),
+            dec=L.Linear(64, 1024)
         )
 
         self.train = train
 
-    def layer1(self, x, t):
-        self.y1 = self.enc1(F.dropout(x, train=self.train))
-        self.t1 = self.dec1(F.dropout(self.y1, train=self.train))
+    def encode(self, x):
+        h = self.enc1(x)
+        return F.relu(self.enc2(h))
 
-        self.loss1 = F.mean_squared_error(t, self.t1)
+    def decode(self, y):
+        return F.relu(self.dec(y))
 
-        return self.loss1
+    def __call__(self, x, t):
+        self.y = self.encode(x)
+        self.t = self.decode(self.y)
 
-    def layer2(self, x, t):
-        self.y2 = self.enc2(F.dropout(x, train=self.train))
-        self.t2 = self.dec2(F.dropout(self.y2, train=self.train))
-
-        self.loss2 = F.mean_squared_error(t, self.t2)
-
-        return self.loss2
-
-    def encode1(self, x):
-        return self.enc1(x)
-
-    def encode2(self, x):
-        return self.enc2(x)
+        return F.mean_squared_error(t, self.t)
 
     def reset_state(self):
         self.enc1.reset_state()
-        self.enc2.reset_state()
+    
+def load_new(train=True):
+    return Encoder(train)
 
-def load_new():
-    return Encoder()
-
-def load_latest():
-    model = load_new()
+def load_latest(train=True):
+    model = load_new(train)
 
     params = os.listdir('encode-model')
     params.sort()

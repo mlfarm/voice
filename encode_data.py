@@ -9,23 +9,27 @@ perm  = np.random.permutation(len(files))
 
 index = 0
 
-def load():
+def load(n):
     global index
 
     #   Storage
     ffts = []
 
-    #   Open File
-    fin = open(os.path.join('data/power', files[perm[index]]), 'rb')
-    index += 1
+    for i in range(n):
+        #   Open File
+        fin = open(os.path.join('data/power', files[perm[index]]), 'rb')
+        index += 1
 
-    #   Read contents
-    buf = fin.read()
+        #   Read contents
+        buf = fin.read()
 
-    #   Close file
-    fin.close()
+        #   Close file
+        fin.close()
 
-    for ind in range(0, len(buf), 1024 * 4):
-        ffts.append(struct.unpack('f' * 1024, buf[ind:ind+1024*4]))
+        x = np.frombuffer(buf, dtype=np.float32)
 
-    return np.asarray(ffts, dtype=np.float32)
+        ffts.extend(x)
+        index += 1
+    
+    d = np.log(np.asarray(ffts, dtype=np.float32).reshape((int(len(ffts) / 1024), 1024))+1)
+    return d
